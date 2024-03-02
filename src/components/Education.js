@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, {Fragment, useRef} from "react";
 import { motion, useScroll } from "framer-motion";
 import LiIcon from "./LiIcon";
 
@@ -29,7 +29,7 @@ const Details = ({ type, time, place, info }) => {
   );
 };
 
-const Education = () => {
+const Education = ({education}) => {
   // animation for left side scroll
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -55,47 +55,26 @@ const Education = () => {
           md:w[2px] md:left-[30px] xs:left-[20px]"
         ></motion.div>
         {/* end of line */}
+        {education&&
 
         <ul className=" w-full flex flex-col items-start justify-between ml-4 xs:ml-2">
-          <Details
-            type="Front-end Developement"
-            time="2022-2023"
-            place="Anformatic/Mashhad"
-            info="This was a full course for Front-end Developement. This course covered all skills needed to design and develope the
-             Front-end of a website, covering important skills such as HTML, CSS, Tailwind, Bootstrap, Material UI and etc.."
-          />
-          {/* education 2 */}
-          <Details
-            type="React.js"
-            time="2023-2023"
-            place="Anformatic/Mashhad"
-            info="This course is designed for people with background knowladge of coding, that want to learn a framework. 
-            This course covered, React.js, Next.js, Redux, etc.."
-          />
-          {/* education 3 */}
-          <Details
-            type="Python Django"
-            time="2023-"
-            place="Anformatic/Mashhad"
-            info=" Python-Django, This course covers, introduction to Python and then moves on to Django and all of its 
-            dependencies."
-          />
-          {/* education 4 */}
-          <Details
-            type="Full-stack Developement"
-            time="2023-"
-            place="Anformatic/Mashhad"
-            info="This is a completional course, designed to help connect Django to React Framework, and get a deep understanding of the
-            API, and how to work with them properly."
-          />
-          {/* education 5 */}
-          <Details
-            type="Figma Design"
-            time="2023-2023"
-            place="Anformatic/Mashhad"
-            info="A quick course as an introduction to Figma design, for easier understanding and better explanation of desing patterns."
-          />
+
+          {education?.map((item)=>(
+
+          <Fragment key={item?.id + item?.created}>
+              <Details
+                  type={item?.title}
+                  time={`from ${item?.start_date} to ${item?.start_date? item.start_date: "-"}`}
+                  place={item.location}
+                  info={item.description}
+              />
+
+          </Fragment>
+          ))}
+
         </ul>
+          }
+
       </div>
     </div>
   );

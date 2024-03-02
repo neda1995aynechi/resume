@@ -10,6 +10,12 @@ import article2 from "../../public/images/articles/create loading screen in reac
 import article3 from "../../public/images/articles/create modal component in react using react portals.png";
 import article4 from "../../public/images/articles/What is Redux with easy explanation.png";
 import article5 from "../../public/images/articles/todo list app built using react redux and framer motion.png";
+import {
+  getArticleData,
+  getArticleTitleData,
+  getLandingData,
+  getProjectsData
+} from "@/utils/axiosInstance";
 
 const FramerImage = motion(Image);
 
@@ -120,7 +126,7 @@ const FeaturedArticle = ({ img, title, time, summery, link }) => {
   );
 };
 
-const articles = () => {
+const articles = ({ articleData, articleTitleData }) => {
   return (
     <>
       <Head>
@@ -133,26 +139,29 @@ const articles = () => {
       justify-center overflow-hidden dark:text-light"
       >
         <Layout className="pt-16">
-          <AnimatedText
-            text="Words can change the world!"
-            className="mb-16
+          {articleTitleData && (
+            <AnimatedText
+              text={articleTitleData?.title}
+              className="mb-16
           lg:!text-7xl sm:mb-8 sm:!text-6xl xs:!text-4xl"
-          />
+            />
+          )}
+
           <ul className="grid grid-cols-2 gap-16 lg:gap-8 md:grid-cols-1 md:gap-6">
             <FeaturedArticle
               title="Build A Custom Pagination Component In Reactjs From Scratch"
               summery="Learn how to build a custom pagination component in ReactJS from scratch. 
             Follow this step-by-step guide to integrate Pagination component in your ReactJS project."
               time="9 minutes read"
-              link="/"
-              img={article1}
+              link="/article/iArticle"
+              img={articleTitleData?.article_img}
             />
             <FeaturedArticle
               title="Build A Custom Pagination Component In Reactjs From Scratch"
               summery="Learn how to build a custom pagination component in ReactJS from scratch. 
             Follow this step-by-step guide to integrate Pagination component in your ReactJS project."
               time="12 minutes read"
-              link="/"
+              link="/article/iArticle"
               img={article2}
             />
           </ul>
@@ -164,7 +173,7 @@ const articles = () => {
             <Article
               title="Form Validation In Reactjs: Build A Reusable Custom Hook For Inputs And Error Handling"
               date="march 22, 2023"
-              link="/"
+              link="/article/iArticle"
               img={article3}
             />
             <Article
@@ -199,3 +208,20 @@ const articles = () => {
 };
 
 export default articles;
+
+export async function getStaticProps() {
+  try {
+    const responseArticle = await getArticleData();
+    const articleData = responseArticle.results;
+
+    const responseArticleTitle = await getArticleTitleData();
+    const articleTitleData = responseArticleTitle.results[0];
+
+    // Pass props
+    return { props: { articleData, articleTitleData }, revalidate: 86400 }; // revalidate every hour (24 hours)
+  } catch (error) {
+    console.error("Error fetching landing data:", error);
+    // Pass an empty object or null if there's an error
+    return { props: { articleData: null }, revalidate: 60 }; // revalidate every minute (60 seconds)
+  }
+}

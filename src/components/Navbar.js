@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Logo from "./Logo";
 import { useRouter } from "next/router";
 import {
@@ -8,12 +8,12 @@ import {
   LinkedInIcon,
   MoonIcon,
   SunIcon,
-  TwitterIcon,
   YoutubeIcon
 } from "./Icons";
 import { motion } from "framer-motion";
 import useThemeSwitcher from "./useThemeSwitcher";
 import { Butterfly_Kids } from "next/font/google";
+import {getAboutData, getLandingSocialData} from "@/utils/axiosInstance";
 
 const emtySpace = " ";
 
@@ -69,7 +69,11 @@ const CustomMobileLink = ({ href, title, className = "", toggle }) => {
   );
 };
 
+
+
 export const Navbar = () => {
+  // console.log("socialData",socialData)
+
   const [mode, setMode] = useThemeSwitcher();
   const [menuIsOpen, setMenuIsOpen] = useState(false); //for collapse menu
 
@@ -131,17 +135,6 @@ export const Navbar = () => {
         </nav>
 
         <nav className="flex items-center justify-center flex-wrap">
-          {/* twitter icon */}
-          {/* <motion.a
-            href="https://twitter.com"
-            target={"_blank"}
-            whileHover={{ y: -2 }}
-            className="w-6 mr-3"
-            whileTap={{ scale: 0.9 }}
-          >
-            <TwitterIcon />
-          </motion.a> */}
-
           {/* git hub icon */}
           <motion.a
             href="https://github.com/neda1995aynechi"
@@ -304,3 +297,19 @@ export const Navbar = () => {
     </header>
   );
 };
+
+//
+// export async function getStaticProps() {
+//   try {
+//     const response = await getLandingSocialData();
+//       const socialData =response.results
+//
+//     // Pass props
+//     return { props: { socialData}, revalidate: 86400 }; // revalidate every hour (24 hours)
+//   } catch (error) {
+//     console.error("Error fetching landing data:", error);
+//     // Pass an empty object or null if there's an error
+//     return { props: { socialData: null }, revalidate: 60 }; // revalidate every minute (60 seconds)
+//   }
+// }
+

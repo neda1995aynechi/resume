@@ -3,6 +3,13 @@ import { Navbar } from "@/components/Navbar";
 import "@/styles/globals.css";
 import { Montserrat } from "next/font/google";
 import Head from "next/head";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// import React,{useState,useState} from "react"
+import React, {Fragment, useEffect, useState} from "react";
+import {getLandingSocialData} from "@/utils/axiosInstance";
+
+
 
 const monsterrat = Montserrat({
   subsets: ["latin"],
@@ -10,6 +17,19 @@ const monsterrat = Montserrat({
 });
 
 export default function App({ Component, pageProps }) {
+
+    // const [socialData, setSocialData] = useState()
+    // console.log("socialData",socialData)
+    //
+    // useEffect(() => {
+    //     const fetchSocial = async () => {
+    //         const data = await getLandingSocialData();
+    //         setSocialData(data);
+    //     };
+    //
+    //     fetchSocial();
+    // }, []);
+
   return (
     <>
       <Head>
@@ -26,3 +46,17 @@ export default function App({ Component, pageProps }) {
     </>
   );
 }
+
+
+<ToastContainer
+    position="bottom-left"
+    autoClose={5000}
+    hideProgressBar={false}
+    newestOnTop={false}
+    closeOnClick
+    rtl={false}
+    pauseOnFocusLoss
+    draggable
+    pauseOnHover
+    theme="dark"
+/>

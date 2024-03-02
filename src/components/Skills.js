@@ -18,7 +18,7 @@ const Skill = ({ skillName, x, y }) => {
   );
 };
 
-const Skills = () => {
+const Skills = ({langSkills}) => {
   return (
     <>
       <h2 className="font-bold text-8xl mt-64 w-full text-center md:text-6xl md:mt-32">
@@ -44,27 +44,55 @@ const Skills = () => {
         </motion.div>
 
         {/* css */}
-        <Skill skillName="HTML" x="-22vw" y="2vw" />
 
-        <Skill skillName="Django" x="-30vw" y="-7vw" />
+        {langSkills[0]&&
+        <Skill skillName={langSkills[0]?.name} x="-22vw" y="2vw" />
+        }
 
-        <Skill skillName="Javascript" x="20vw" y="6vw" />
+        {langSkills[1]&&
+        <Skill skillName={langSkills[1]?.name} x="-30vw" y="-7vw" />
+        }
 
-        <Skill skillName="React.js" x="0vw" y="10vw" />
+        {langSkills[2]&&
+        <Skill skillName={langSkills[2]?.name} x="20vw" y="6vw" />
+        }
 
-        <Skill skillName="CSS" x="-5vw" y="20vw" />
+        {langSkills[3]&&
+        <Skill skillName={langSkills[3]?.name} x="0vw" y="10vw" />
+        }
 
-        <Skill skillName="Next.js" x="-20vw" y="-15vw" />
+        {langSkills[4]&&
+        <Skill skillName={langSkills[4]?.name} x="-5vw" y="20vw" />
+        }
 
-        <Skill skillName="Tailwind" x="15vw" y="-12vw" />
+        {langSkills[5]&&
+        <Skill skillName={langSkills[5]?.name} x="-20vw" y="-15vw" />
+        }
 
-        <Skill skillName="Bootstrap" x="32vw" y="-5vw" />
+        {langSkills[6]&&
+        <Skill skillName={langSkills[6]?.name} x="15vw" y="-12vw" />
+        }
 
-        <Skill skillName="Web Design" x="0vw" y="-20vw" />
+        {langSkills[7]&&
+        <Skill skillName={langSkills[7]?.name} x="32vw" y="-5vw" />
+        }
 
-        <Skill skillName="Python" x="-25vw" y="15vw" />
+        {langSkills[8]&&
+        <Skill skillName={langSkills[8]?.name} x="0vw" y="-20vw" />
+        }
 
-        <Skill skillName="English" x="18vw" y="18vw" />
+        {langSkills[9]&&
+        <Skill skillName={langSkills[9]?.name} x="-25vw" y="15vw" />
+        }
+
+          {langSkills[10]&&
+        <Skill skillName={langSkills[10]?.name} x="18vw" y="18vw" />
+          }
+
+          {langSkills[11]&&
+        <Skill skillName={langSkills[11]?.name} x="-7vw" y="-7vw" />
+          }
+
       </div>
     </>
   );

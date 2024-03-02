@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, {Fragment, useRef} from "react";
 import { motion, useScroll } from "framer-motion";
 import LiIcon from "./LiIcon";
 
@@ -8,7 +8,7 @@ const Details = ({ position, company, companiLink, time, address, work }) => {
     <li
       ref={ref}
       className="my-8 first:mt-0 last:mb-0 w-[60%] mx-auto 
-    flex flex-col items-center justify-center
+    flex flex-col items-start justify-center
     md:w-[80%]
     "
     >
@@ -37,7 +37,7 @@ const Details = ({ position, company, companiLink, time, address, work }) => {
   );
 };
 
-const Experience = () => {
+const Experience = ({experience}) => {
   // animation for left side scroll
   const ref = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -46,15 +46,17 @@ const Experience = () => {
   });
   // end of animation
 
+
   return (
     <div className="my-64">
       <h2 className="font-bold text-8xl mb-32 w-full text-center md:text-6xl xs:text-4xl md:mb-16">
         Experience
       </h2>
 
-      {/* experience 1  */}
+      {/* experience */}
 
-      <div className="w-[75%] mx-auto relative lg:w-[90%] md:w-full ">
+      <div
+          className="w-[75%] mx-auto relative lg:w-[90%] md:w-full ">
         {/* left side scroll line */}
         <motion.div
           style={{ scaleY: scrollYProgress }}
@@ -65,19 +67,21 @@ const Experience = () => {
         {/* end of line */}
 
         <ul className=" w-full flex flex-col items-start justify-between ml-4 xs:ml-2">
+          {experience?.map((item)=>(
+              <Fragment key={item?.id + item?.created}>
           <Details
-            position="Software Engineer"
+            position={item?.title}
             company="CodeByNeda"
-            companiLink="/"
-            time="May15/2023"
-            address="mashhad"
-            work="Developed a portfolio website using Next.js.
-            Created visually stunning animations and implemented a dark theme.
-            Built a responsive website to cater to a diverse audience.
-            "
+            companiLink={item?.company_site}
+            time={`from ${item?.start_date} to ${item?.start_date? item.start_date: "-"}`}
+            address={item?.location}
+            work={item?.description}
           />
+              </Fragment>
+          ))}
         </ul>
       </div>
+
     </div>
   );
 };

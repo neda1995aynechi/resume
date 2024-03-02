@@ -9,6 +9,7 @@ import project2 from "../../public/images/projects/gym-website.png";
 import project3 from "../../public/images/projects/website2.png";
 import projectFeatured from "../../public/images/projects/aiWebsite.png";
 import { motion } from "framer-motion";
+import { getLandingData, getProjectsData } from "@/utils/axiosInstance";
 
 const FramerImage = motion(Image);
 
@@ -162,7 +163,9 @@ const Project = ({ title, type, img, link, github }) => {
   );
 };
 
-const projects = () => {
+const projects = ({ projectData }) => {
+  console.log("projectData", projectData);
+
   return (
     <>
       <Head>
@@ -179,50 +182,41 @@ const projects = () => {
 
           <div className="grid grid-cols-12 gap-24 gap-y-32 sm:gap-y-16 xs:gap-y-10 xl:gap-x-16 lg:gap-x-8 md:gap-y-24 sm:gap-x-0">
             {/* full row */}
-            <div className="col-span-12">
-              <FeaturedProject
-                title="Ai website"
-                img={projectFeatured}
-                summery="Unleash the future of web development with our exceptional programming skills. Elevate your online presence with a responsive and visually 
-                stunning website that captivates your audience. Let us bring your vision to life and take your website to new heights."
-                link="/"
-                github="/"
-                type="Featured Project"
-              />
-            </div>
 
-            {/* end of full row */}
+            {projectData?.map((object) => (
+              <React.Fragment key={object?.id + object?.created}>
+                {object?.type === "featured" && (
+                  <div className="col-span-12">
+                    <FeaturedProject
+                      title={object?.projects[0]?.title}
+                      img={projectFeatured}
+                      summery={object?.projects[0]?.description}
+                      link="/"
+                      github="/"
+                      type="Featured Project"
+                    />
+                  </div>
+                )}
 
-            {/* two im one row */}
-            {/* project 1 */}
-            <div className="col-span-6 sm:col-span-12">
-              <Project
-                title="Gym Website - Bootstrap"
-                img={project2}
-                summery="A feature-rich Crypto Screener App using React, Tailwind CSS, Context API, React Router and Recharts. 
-              It shows detail regarding almost all the cryptocurrency. You can easily convert the price in your 
-              local currency."
-                link="/"
-                github="/"
-                type="Featured Project"
-              />
-            </div>
-
-            {/* project 2 */}
-            <div className="col-span-6 sm:col-span-12">
-              <Project
-                title="Inroduction Website"
-                img={project3}
-                summery="A feature-rich Crypto Screener App using React, Tailwind CSS, Context API, React Router and Recharts. 
-              It shows detail regarding almost all the cryptocurrency. You can easily convert the price in your 
-              local currency."
-                link="/"
-                github="/"
-                type="Featured Project"
-              />
-            </div>
-
-            {/* end of two in one row */}
+                {object?.type === "normal" && (
+                  <>
+                    {console.log("testing", object?.projects)}
+                    {object?.projects?.map((item) => (
+                      <div key={item.id} className="col-span-6 sm:col-span-12">
+                        <Project
+                          title={item.title}
+                          img={project2}
+                          summery={item.description}
+                          link="/"
+                          github="/"
+                          type="Featured Project"
+                        />
+                      </div>
+                    ))}
+                  </>
+                )}
+              </React.Fragment>
+            ))}
           </div>
         </Layout>
       </main>
@@ -231,3 +225,17 @@ const projects = () => {
 };
 
 export default projects;
+
+export async function getStaticProps() {
+  try {
+    const response = await getProjectsData();
+    const projectData = response.results;
+
+    // Pass landingData as props
+    return { props: { projectData }, revalidate: 86400 }; // revalidate every hour (24 hours)
+  } catch (error) {
+    console.error("Error fetching landing data:", error);
+    // Pass an empty object or null if there's an error
+    return { props: { projectData: null }, revalidate: 60 }; // revalidate every minute (60 seconds)
+  }
+}
